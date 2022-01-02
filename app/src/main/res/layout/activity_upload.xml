@@ -1,0 +1,1159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Upload">
+
+    <EditText
+        android:id="@+id/lvlID"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="level"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="132dp"
+        android:text="Upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lvlID" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/sudoku"
+        android:gravity="center|center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/ebutton1"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+
+                    android:text="@string/space"
+                    android:background="@drawable/border"
+                    android:inputType="number"
+                    android:padding="0dp"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton2"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton3"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton4"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton5"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton6"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton7"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton8"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton9"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton10"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton11"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton12"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton13"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton14"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton15"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton16"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton17"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton18"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton19"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton20"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton21"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton22"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton23"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton24"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton25"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton26"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton27"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="1dp">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton28"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton29"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton30"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton31"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton32"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton33"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton34"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton35"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton36"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton37"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton38"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton39"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton40"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton41"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton42"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton43"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton44"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton45"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton46"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton47"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton48"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton49"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton50"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton51"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton52"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton53"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton54"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton55"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton56"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton57"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton58"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton59"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton60"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton61"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton62"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton63"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton64"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton65"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton66"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton67"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton68"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton69"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton70"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton71"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton72"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton73"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton74"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton75"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton76"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="1dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton77"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton78"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton79"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton80"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+
+                <EditText
+      android:inputType="number"
+                    android:id="@+id/ebutton81"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/border"
+                    android:padding="0dp"
+                    android:text="@string/space"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    app:iconTint="@color/black" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

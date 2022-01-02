@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Sudoku</string>
+    <string name="space"> </string>
+    <string name="title_activity_play">Play</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
