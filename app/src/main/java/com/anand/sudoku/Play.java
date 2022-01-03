@@ -1,5 +1,6 @@
 package com.anand.sudoku;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,13 +29,13 @@ public class Play extends AppCompatActivity {
             btn40, btn41, btn42, btn43, btn44, btn45, btn46, btn47, btn48, btn49, btn50, btn51, btn52, btn53, btn54, btn55, btn56, btn57, btn58,
             btn59, btn60, btn61, btn62, btn63, btn64, btn65, btn66, btn67, btn68, btn69, btn70, btn71, btn72, btn73, btn74, btn75, btn76, btn77,
             btn78, btn79, btn80, btn81,
-            press1,press2,press3,press4,press5,press6,press7,press8,press9;
+            press1, press2, press3, press4, press5, press6, press7, press8, press9;
 
     TextView CurLvL;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     String[] num = new String[90];
-    int btnActi;
+    int btnActi, Activated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +75,50 @@ public class Play extends AppCompatActivity {
                 if (false) {
 
                 } else {
-                    if (btn1.getText() == " ") {
-                        btn1.setText(btnActi);
+
+                    if (btn1.getText().toString().equals(" ")) {
+                        Log.e("btn1 up", btn1.getText().toString());
+                        if (Activated == 0) {
+                            Toast.makeText(Play.this, "Select a number", Toast.LENGTH_SHORT).show();
+                        } else {
+                            btn1.setText(String.valueOf(Activated));
+                        }
+                    } else {
+                        Log.e("btn1", btn1.getText().toString());
+
+
+                        btn1.setBackgroundColor(getResources().getColor(R.color.red));
+                        Thread one = new Thread() {
+                            public void run() {
+
+
+                                try {
+
+                                    Thread.sleep(200);
+                                    runOnUiThread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            btn1.setBackgroundColor(getResources().getColor(R.color.trans));
+
+                                            // Stuff that updates the UI
+
+                                        }
+                                    });
+
+
+                                } catch (InterruptedException ex) {
+                                    //do stuff
+
+
+                                }
+
+                            }
+                        };
+
+                        one.start();
+
+                        // btn1.setText("Activated");
                     }
 
                 }
@@ -86,10 +129,392 @@ public class Play extends AppCompatActivity {
         press1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (press1.getTag().toString().equals("A")) {
+                    press1.setTag(" ");
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                    blinkChk(0);
+                } else {
+                    press1.setTag("A");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 1;
+                    press1.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    blinkChk(1);
+                }
             }
         });
 
+        press2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press2.getTag().toString().equals("A")) {
+                    press2.setTag(" ");
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press2.setTag("A");
+                    press1.setTag(" ");
+
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 2;
+                    press2.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press3.getTag().toString().equals("A")) {
+                    press3.setTag(" ");
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press3.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 3;
+                    press3.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press4.getTag().toString().equals("A")) {
+                    press4.setTag(" ");
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press4.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 4;
+                    press4.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press5.getTag().toString().equals("A")) {
+                    press5.setTag(" ");
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press5.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 5;
+                    press5.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press6.getTag().toString().equals("A")) {
+                    press6.setTag(" ");
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press6.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 6;
+                    press6.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press7.getTag().toString().equals("A")) {
+                    press7.setTag(" ");
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press7.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+
+                    press8.setTag(" ");
+                    press9.setTag(" ");
+                    Activated = 7;
+                    press7.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press8.getTag().toString().equals("A")) {
+                    press8.setTag(" ");
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press8.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+
+                    press9.setTag(" ");
+                    Activated = 8;
+                    press8.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                }
+            }
+        });
+
+        press9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (press9.getTag().toString().equals("A")) {
+                    press9.setTag(" ");
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    Activated = 0;
+                } else {
+                    press9.setTag("A");
+                    press1.setTag(" ");
+                    press2.setTag(" ");
+                    press3.setTag(" ");
+                    press4.setTag(" ");
+                    press5.setTag(" ");
+                    press6.setTag(" ");
+                    press7.setTag(" ");
+                    press8.setTag(" ");
+
+                    Activated = 9;
+                    press9.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+
+                }
+            }
+        });
+
+    }
+
+    private void blinkChk(int i) {
+        if (i == 0) {
+            btn1.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn2.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn3.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn4.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn5.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn6.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn7.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn8.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn9.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn10.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn11.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn12.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn13.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn14.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn15.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn16.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn17.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn18.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn19.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn20.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn21.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn22.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn23.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn24.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn25.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn26.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn27.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn28.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn29.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn30.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn31.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn32.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn33.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn34.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn35.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn36.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn37.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn38.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn39.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn40.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn41.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn42.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn43.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn44.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn45.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn46.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn47.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn48.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn49.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn50.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn51.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn52.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn53.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn54.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn55.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn56.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn57.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn58.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn59.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn60.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn61.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn62.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn63.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn64.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn65.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn66.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn67.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn68.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn69.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn70.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn71.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn72.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn73.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn74.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn75.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn76.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn77.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn78.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn79.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn80.setBackgroundColor(getResources().getColor(R.color.trans));
+            btn81.setBackgroundColor(getResources().getColor(R.color.trans));
+
+        } else if (i == 1) {
+             if (btn1.getText().toString().equals("1")) {
+                btn1.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+            }
+            if (btn2.getText().toString().equals("1")) {
+                Toast.makeText(Play.this,btn2.getText().toString() , Toast.LENGTH_SHORT).show();
+
+                btn2.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+            }
+        }
     }
 
     private void result() {
@@ -120,6 +545,7 @@ public class Play extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void getdata(String level) {
         databaseReference.child("Level").child(level).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -127,6 +553,7 @@ public class Play extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Log.e("firebase", "Error getting data", task.getException());
                     Toast.makeText(Play.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_LONG).show();
+
 
                 } else {
                     // Toast.makeText(Play.this, String.valueOf(task.getResult().getValue()), Toast.LENGTH_LONG).show();
@@ -253,7 +680,8 @@ public class Play extends AppCompatActivity {
     private void initialize() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Data");
-        btnActi = Integer.parseInt(null);
+        btnActi = 0;
+        Activated = 0;
         CurLvL = findViewById(R.id.CurLvL);
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
@@ -340,14 +768,22 @@ public class Play extends AppCompatActivity {
         press1 = findViewById(R.id.press1);
         press2 = findViewById(R.id.press2);
         press3 = findViewById(R.id.press3);
-        press4= findViewById(R.id.press4);
-        press5= findViewById(R.id.press5);
-        press6= findViewById(R.id.press6);
-        press7= findViewById(R.id.press7);
-        press8= findViewById(R.id.press8);
-        press9= findViewById(R.id.press9);
+        press4 = findViewById(R.id.press4);
+        press5 = findViewById(R.id.press5);
+        press6 = findViewById(R.id.press6);
+        press7 = findViewById(R.id.press7);
+        press8 = findViewById(R.id.press8);
+        press9 = findViewById(R.id.press9);
 
-
+        press1.setTag(" ");
+        press2.setTag(" ");
+        press3.setTag(" ");
+        press4.setTag(" ");
+        press5.setTag(" ");
+        press6.setTag(" ");
+        press7.setTag(" ");
+        press8.setTag(" ");
+        press9.setTag(" ");
 
     }
 

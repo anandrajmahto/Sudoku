@@ -1,6 +1,7 @@
 package com.anand.sudoku;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ public class Upload extends AppCompatActivity {
             btn40, btn41, btn42, btn43, btn44, btn45, btn46, btn47, btn48, btn49, btn50, btn51, btn52, btn53, btn54, btn55, btn56, btn57, btn58,
             btn59, btn60, btn61, btn62, btn63, btn64, btn65, btn66, btn67, btn68, btn69, btn70, btn71, btn72, btn73, btn74, btn75, btn76, btn77,
             btn78, btn79, btn80, btn81;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +112,7 @@ public class Upload extends AppCompatActivity {
         btn79 = findViewById(R.id.ebutton79);
         btn80 = findViewById(R.id.ebutton80);
         btn81 = findViewById(R.id.ebutton81);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Data");
         EditText lvl = findViewById(R.id.lvlID);
@@ -117,7 +120,251 @@ public class Upload extends AppCompatActivity {
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LevelAdapter lvldata = new LevelAdapter(btn1.getText().toString(),btn2.getText().toString(),btn3.getText().toString(),btn4.getText().toString(),btn5.getText().toString(),btn6.getText().toString(),btn7.getText().toString(),btn8.getText().toString(),btn9.getText().toString(),btn10.getText().toString(),btn11.getText().toString(),btn12.getText().toString(),btn13.getText().toString(),btn14.getText().toString(),btn15.getText().toString(),btn16.getText().toString(),btn17.getText().toString(),btn18.getText().toString(),btn19.getText().toString(),btn20.getText().toString(),btn21.getText().toString(),btn22.getText().toString(),btn23.getText().toString(),btn24.getText().toString(),btn25.getText().toString(),btn26.getText().toString(),btn27.getText().toString(),btn28.getText().toString(),btn29.getText().toString(),btn30.getText().toString(),btn31.getText().toString(),btn32.getText().toString(),btn33.getText().toString(),btn34.getText().toString(),btn35.getText().toString(),btn36.getText().toString(),btn37.getText().toString(),btn38.getText().toString(),btn39.getText().toString(),btn40.getText().toString(),btn41.getText().toString(),btn42.getText().toString(),btn43.getText().toString(),btn44.getText().toString(),btn45.getText().toString(),btn46.getText().toString(),btn47.getText().toString(),btn48.getText().toString(),btn49.getText().toString(),btn50.getText().toString(),btn51.getText().toString(),btn52.getText().toString(),btn53.getText().toString(),btn54.getText().toString(),btn55.getText().toString(),btn56.getText().toString(),btn57.getText().toString(),btn58.getText().toString(),btn59.getText().toString(),btn60.getText().toString(),btn61.getText().toString(),btn62.getText().toString(),btn63.getText().toString(),btn64.getText().toString(),btn65.getText().toString(),btn66.getText().toString(),btn67.getText().toString(),btn68.getText().toString(),btn69.getText().toString(),btn70.getText().toString(),btn71.getText().toString(),btn72.getText().toString(),btn73.getText().toString(),btn74.getText().toString(),btn75.getText().toString(),btn76.getText().toString(),btn77.getText().toString(),btn78.getText().toString(),btn79.getText().toString(),btn80.getText().toString(),btn81.getText().toString());
+                if (TextUtils.isEmpty(btn1.getText().toString())) {
+                    btn1.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn2.getText().toString())) {
+                    btn2.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn3.getText().toString())) {
+                    btn3.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn4.getText().toString())) {
+                    btn4.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn5.getText().toString())) {
+                    btn5.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn6.getText().toString())) {
+                    btn6.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn7.getText().toString())) {
+                    btn7.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn8.getText().toString())) {
+                    btn8.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn9.getText().toString())) {
+                    btn9.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn10.getText().toString())) {
+                    btn10.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn11.getText().toString())) {
+                    btn11.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn12.getText().toString())) {
+                    btn12.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn13.getText().toString())) {
+                    btn13.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn14.getText().toString())) {
+                    btn14.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn15.getText().toString())) {
+                    btn15.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn16.getText().toString())) {
+                    btn16.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn17.getText().toString())) {
+                    btn17.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn18.getText().toString())) {
+                    btn18.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn19.getText().toString())) {
+                    btn19.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn20.getText().toString())) {
+                    btn20.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn21.getText().toString())) {
+                    btn21.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn22.getText().toString())) {
+                    btn22.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn23.getText().toString())) {
+                    btn23.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn24.getText().toString())) {
+                    btn24.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn25.getText().toString())) {
+                    btn25.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn26.getText().toString())) {
+                    btn26.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn27.getText().toString())) {
+                    btn27.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn28.getText().toString())) {
+                    btn28.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn29.getText().toString())) {
+                    btn29.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn30.getText().toString())) {
+                    btn30.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn31.getText().toString())) {
+                    btn31.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn32.getText().toString())) {
+                    btn32.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn33.getText().toString())) {
+                    btn33.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn34.getText().toString())) {
+                    btn34.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn35.getText().toString())) {
+                    btn35.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn36.getText().toString())) {
+                    btn36.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn37.getText().toString())) {
+                    btn37.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn38.getText().toString())) {
+                    btn38.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn39.getText().toString())) {
+                    btn39.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn40.getText().toString())) {
+                    btn40.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn41.getText().toString())) {
+                    btn41.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn42.getText().toString())) {
+                    btn42.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn43.getText().toString())) {
+                    btn43.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn44.getText().toString())) {
+                    btn44.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn45.getText().toString())) {
+                    btn45.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn46.getText().toString())) {
+                    btn46.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn47.getText().toString())) {
+                    btn47.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn48.getText().toString())) {
+                    btn48.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn49.getText().toString())) {
+                    btn49.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn50.getText().toString())) {
+                    btn50.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn51.getText().toString())) {
+                    btn51.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn52.getText().toString())) {
+                    btn52.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn53.getText().toString())) {
+                    btn53.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn54.getText().toString())) {
+                    btn54.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn55.getText().toString())) {
+                    btn55.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn56.getText().toString())) {
+                    btn56.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn57.getText().toString())) {
+                    btn57.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn58.getText().toString())) {
+                    btn58.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn59.getText().toString())) {
+                    btn59.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn60.getText().toString())) {
+                    btn60.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn61.getText().toString())) {
+                    btn61.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn62.getText().toString())) {
+                    btn62.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn63.getText().toString())) {
+                    btn63.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn64.getText().toString())) {
+                    btn64.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn65.getText().toString())) {
+                    btn65.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn66.getText().toString())) {
+                    btn66.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn67.getText().toString())) {
+                    btn67.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn68.getText().toString())) {
+                    btn68.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn69.getText().toString())) {
+                    btn69.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn70.getText().toString())) {
+                    btn70.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn71.getText().toString())) {
+                    btn71.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn72.getText().toString())) {
+                    btn72.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn73.getText().toString())) {
+                    btn73.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn74.getText().toString())) {
+                    btn74.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn75.getText().toString())) {
+                    btn75.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn76.getText().toString())) {
+                    btn76.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn77.getText().toString())) {
+                    btn77.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn78.getText().toString())) {
+                    btn78.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn79.getText().toString())) {
+                    btn79.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn80.getText().toString())) {
+                    btn80.setText(" ");
+                }
+                if (TextUtils.isEmpty(btn81.getText().toString())) {
+                    btn81.setText(" ");
+                }
+
+                LevelAdapter lvldata = new LevelAdapter(btn1.getText().toString(), btn2.getText().toString(), btn3.getText().toString(), btn4.getText().toString(), btn5.getText().toString(), btn6.getText().toString(), btn7.getText().toString(), btn8.getText().toString(), btn9.getText().toString(), btn10.getText().toString(), btn11.getText().toString(), btn12.getText().toString(), btn13.getText().toString(), btn14.getText().toString(), btn15.getText().toString(), btn16.getText().toString(), btn17.getText().toString(), btn18.getText().toString(), btn19.getText().toString(), btn20.getText().toString(), btn21.getText().toString(), btn22.getText().toString(), btn23.getText().toString(), btn24.getText().toString(), btn25.getText().toString(), btn26.getText().toString(), btn27.getText().toString(), btn28.getText().toString(), btn29.getText().toString(), btn30.getText().toString(), btn31.getText().toString(), btn32.getText().toString(), btn33.getText().toString(), btn34.getText().toString(), btn35.getText().toString(), btn36.getText().toString(), btn37.getText().toString(), btn38.getText().toString(), btn39.getText().toString(), btn40.getText().toString(), btn41.getText().toString(), btn42.getText().toString(), btn43.getText().toString(), btn44.getText().toString(), btn45.getText().toString(), btn46.getText().toString(), btn47.getText().toString(), btn48.getText().toString(), btn49.getText().toString(), btn50.getText().toString(), btn51.getText().toString(), btn52.getText().toString(), btn53.getText().toString(), btn54.getText().toString(), btn55.getText().toString(), btn56.getText().toString(), btn57.getText().toString(), btn58.getText().toString(), btn59.getText().toString(), btn60.getText().toString(), btn61.getText().toString(), btn62.getText().toString(), btn63.getText().toString(), btn64.getText().toString(), btn65.getText().toString(), btn66.getText().toString(), btn67.getText().toString(), btn68.getText().toString(), btn69.getText().toString(), btn70.getText().toString(), btn71.getText().toString(), btn72.getText().toString(), btn73.getText().toString(), btn74.getText().toString(), btn75.getText().toString(), btn76.getText().toString(), btn77.getText().toString(), btn78.getText().toString(), btn79.getText().toString(), btn80.getText().toString(), btn81.getText().toString());
                 databaseReference.child("Level").child(lvl.getText().toString()).setValue(lvldata).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
