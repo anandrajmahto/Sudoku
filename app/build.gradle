@@ -45,4 +45,8 @@ dependencies {
     //firebase
     implementation 'com.google.firebase:firebase-analytics'
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    //material dialog
+
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
+
 }

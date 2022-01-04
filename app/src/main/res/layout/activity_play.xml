@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent">
 
 
@@ -1230,7 +1231,7 @@
             android:textStyle="normal|bold" />
 
         <Button
-            android:id="@+id/close"
+            android:id="@+id/erase"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="53dp"
             android:layout_height="53dp"

@@ -1,18 +1,31 @@
 package com.anand.sudoku;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class Play extends AppCompatActivity {
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20,
@@ -20,13 +33,17 @@ public class Play extends AppCompatActivity {
             btn40, btn41, btn42, btn43, btn44, btn45, btn46, btn47, btn48, btn49, btn50, btn51, btn52, btn53, btn54, btn55, btn56, btn57, btn58,
             btn59, btn60, btn61, btn62, btn63, btn64, btn65, btn66, btn67, btn68, btn69, btn70, btn71, btn72, btn73, btn74, btn75, btn76, btn77,
             btn78, btn79, btn80, btn81,
-            press1, press2, press3, press4, press5, press6, press7, press8, press9;
-
+            press1, press2, press3, press4, press5, press6, press7, press8, press9,
+            erase;
+ImageView life1,life2,life3;
     TextView CurLvL;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     String[] num;
+    Button[] btnA;
     int Activated;
+    private boolean remove;
+     int lifeCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,493 +78,528 @@ public class Play extends AppCompatActivity {
     }
 
     private void clickListeners() {
+        erase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             if (remove){
+                 remove=false;
 
+                 erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                 blinkChk(0);
+             }else{
+                 remove=true;
+                 blinkChk(0);
+                 erase.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                 Activated=0;
+                 press1.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press2.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press3.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press4.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press5.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press6.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press7.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                 press1.setTag(" ");
+                 press2.setTag(" ");
+                 press3.setTag(" ");
+                 press4.setTag(" ");
+                 press5.setTag(" ");
+                 press6.setTag(" ");
+                 press7.setTag(" ");
+                 press8.setTag(" ");
+                 press9.setTag(" ");
+             }
+
+            }
+        });
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn1);
+                // numFill();
+                clickListeners1(1, btn1, 1);
 
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn2);
+                clickListeners1(2, btn2, 1);
 
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn3);
+                clickListeners1(3, btn3, 1);
             }
         });
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn4);
+                clickListeners1(4, btn4, 2);
             }
         });
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn5);
+                clickListeners1(5, btn5, 2);
             }
         });
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn6);
+                clickListeners1(6, btn6, 2);
             }
         });
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn7);
+                clickListeners1(7, btn7, 3);
             }
         });
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn8);
+                clickListeners1(8, btn8, 3);
             }
         });
         btn9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn9);
+                clickListeners1(9, btn9, 3);
             }
         });
         btn10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn10);
+                clickListeners1(10, btn10, 1);
             }
         });
         btn11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn11);
+                clickListeners1(11, btn11, 1);
             }
         });
         btn12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn12);
+                clickListeners1(12, btn12, 1);
             }
         });
         btn13.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn13);
+                clickListeners1(13, btn13, 2);
             }
         });
         btn14.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn14);
+                clickListeners1(14, btn14, 2);
             }
         });
         btn15.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn15);
+                clickListeners1(15, btn15, 2);
             }
         });
         btn16.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn16);
+                clickListeners1(16, btn16, 3);
             }
         });
         btn17.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn17);
+                clickListeners1(17, btn17, 3);
             }
         });
         btn18.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn18);
+                clickListeners1(18, btn18, 3);
             }
         });
         btn19.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn19);
+                clickListeners1(19, btn19, 1);
             }
         });
         btn20.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn20);
+                clickListeners1(20, btn20, 1);
             }
         });
         btn21.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn21);
+                clickListeners1(21, btn21, 1);
             }
         });
         btn22.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn22);
+                clickListeners1(22, btn22, 2);
             }
         });
         btn23.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn23);
+                clickListeners1(23, btn23, 2);
             }
         });
         btn24.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn24);
+                clickListeners1(24, btn24, 2);
             }
         });
         btn25.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn25);
+                clickListeners1(25, btn25, 3);
             }
         });
         btn26.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn26);
+                clickListeners1(26, btn26, 3);
             }
         });
         btn27.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn27);
+                clickListeners1(27, btn27, 3);
             }
         });
         btn28.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn28);
+                clickListeners1(28, btn28, 4);
             }
         });
         btn29.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn29);
+                clickListeners1(29, btn29, 4);
             }
         });
         btn30.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn30);
+                clickListeners1(30, btn30, 4);
             }
         });
         btn31.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn31);
+                clickListeners1(31, btn31, 5);
             }
         });
         btn32.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn32);
+                clickListeners1(32, btn32, 5);
             }
         });
         btn33.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn33);
+                clickListeners1(33, btn33, 5);
             }
         });
         btn34.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn34);
+                clickListeners1(34, btn34, 6);
             }
         });
         btn35.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn35);
+                clickListeners1(35, btn35, 6);
             }
         });
         btn36.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn36);
+                clickListeners1(36, btn36, 6);
             }
         });
         btn37.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn37);
+                clickListeners1(37, btn37, 4);
             }
         });
         btn38.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn38);
+                clickListeners1(38, btn38, 4);
             }
         });
         btn39.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn39);
+                clickListeners1(39, btn39, 4);
             }
         });
         btn40.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn40);
+                clickListeners1(40, btn40, 5);
             }
         });
         btn41.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn41);
+                clickListeners1(41, btn41, 5);
             }
         });
         btn42.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn42);
+                clickListeners1(42, btn42, 5);
             }
         });
         btn43.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn43);
+                clickListeners1(43, btn43, 6);
             }
         });
         btn44.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn44);
+                clickListeners1(44, btn44, 6);
             }
         });
         btn45.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn45);
+                clickListeners1(45, btn45, 6);
             }
         });
         btn46.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn46);
+                clickListeners1(46, btn46, 4);
             }
         });
         btn47.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn47);
+                clickListeners1(47, btn47, 4);
             }
         });
         btn48.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn48);
+                clickListeners1(48, btn48, 4);
             }
         });
         btn49.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn49);
+                clickListeners1(49, btn49, 5);
             }
         });
         btn50.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn50);
+                clickListeners1(50, btn50, 5);
             }
         });
         btn51.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn51);
+                clickListeners1(51, btn51, 5);
             }
         });
         btn52.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn52);
+                clickListeners1(52, btn52, 6);
             }
         });
         btn53.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn53);
+                clickListeners1(53, btn53, 6);
             }
         });
         btn54.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn54);
+                clickListeners1(54, btn54, 6);
             }
         });
         btn55.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn55);
+                clickListeners1(55, btn55, 7);
             }
         });
         btn56.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn56);
+                clickListeners1(56, btn56, 7);
             }
         });
         btn57.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn57);
+                clickListeners1(57, btn57, 7);
             }
         });
         btn58.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn58);
+                clickListeners1(58, btn58, 8);
             }
         });
         btn59.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn59);
+                clickListeners1(59, btn59, 8);
             }
         });
         btn60.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn60);
+                clickListeners1(60, btn60, 8);
             }
         });
         btn61.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn61);
+                clickListeners1(61, btn61, 9);
             }
         });
         btn62.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn62);
+                clickListeners1(62, btn62, 9);
             }
         });
         btn63.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn63);
+                clickListeners1(63, btn63, 9);
             }
         });
         btn64.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn64);
+                clickListeners1(64, btn64, 7);
             }
         });
         btn65.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn65);
+                clickListeners1(65, btn65, 7);
             }
         });
         btn66.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn66);
+                clickListeners1(66, btn66, 7);
             }
         });
         btn67.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn67);
+                clickListeners1(67, btn67, 8);
             }
         });
         btn68.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn68);
+                clickListeners1(68, btn68, 8);
             }
         });
         btn69.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn69);
+                clickListeners1(69, btn69, 8);
             }
         });
         btn70.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn70);
+                clickListeners1(70, btn70, 9);
             }
         });
         btn71.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn71);
+                clickListeners1(71, btn71, 9);
             }
         });
         btn72.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn72);
+                clickListeners1(72, btn72, 9);
             }
         });
         btn73.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn73);
+                clickListeners1(73, btn73, 7);
             }
         });
         btn74.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn74);
+                clickListeners1(74, btn74, 7);
             }
         });
         btn75.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn75);
+                clickListeners1(75, btn75, 7);
             }
         });
         btn76.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn76);
+                clickListeners1(76, btn76, 8);
             }
         });
         btn77.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn77);
+                clickListeners1(77, btn77, 8);
             }
         });
         btn78.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn78);
+                clickListeners1(78, btn78, 8);
             }
         });
         btn79.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn79);
+                clickListeners1(79, btn79, 9);
             }
         });
         btn80.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn80);
+                clickListeners1(80, btn80, 9);
             }
         });
         btn81.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListeners1(btn81);
+                clickListeners1(81, btn81, 9);
             }
         });
 
@@ -580,6 +632,8 @@ public class Play extends AppCompatActivity {
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
                     press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+remove=false;
                     blinkChk(1);
                 }
             }
@@ -614,7 +668,8 @@ public class Play extends AppCompatActivity {
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(2);
                 }
             }
@@ -648,7 +703,8 @@ public class Play extends AppCompatActivity {
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(3);
                 }
             }
@@ -683,7 +739,8 @@ public class Play extends AppCompatActivity {
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(4);
                 }
             }
@@ -718,7 +775,8 @@ public class Play extends AppCompatActivity {
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(5);
                 }
             }
@@ -752,7 +810,8 @@ public class Play extends AppCompatActivity {
                     press5.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(6);
                 }
             }
@@ -786,7 +845,8 @@ public class Play extends AppCompatActivity {
                     press5.setBackgroundColor(getResources().getColor(R.color.trans));
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press8.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(7);
                 }
             }
@@ -820,7 +880,8 @@ public class Play extends AppCompatActivity {
                     press5.setBackgroundColor(getResources().getColor(R.color.trans));
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press9.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press9.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(8);
                 }
             }
@@ -854,7 +915,8 @@ public class Play extends AppCompatActivity {
                     press5.setBackgroundColor(getResources().getColor(R.color.trans));
                     press6.setBackgroundColor(getResources().getColor(R.color.trans));
                     press7.setBackgroundColor(getResources().getColor(R.color.trans));
-                    press8.setBackgroundColor(getResources().getColor(R.color.trans));
+                    press8.setBackgroundColor(getResources().getColor(R.color.trans));    erase.setBackgroundColor(getResources().getColor(R.color.trans));
+                    remove=false;
                     blinkChk(9);
 
                 }
@@ -863,16 +925,25 @@ public class Play extends AppCompatActivity {
 
     }
 
-    private void clickListeners1(Button btn) {
-        if (false) {
+    private void numFill() {
 
+        for (int i = 0; i < btnA.length; i++) {
+            btnA[i].setText(String.valueOf(i + 1));
+        }
+    }
+
+    private void clickListeners1(int pos, Button btn, int grp) {
+        if (remove) {
+            if (btn.getTag().toString() != " ") {
+                btn.setText(" ");
+            }
         } else {
             if (btn.getText().toString().equals(" ")) {
                 Log.e("btn1 up", btn.getText().toString());
                 if (Activated == 0) {
                     Toast.makeText(Play.this, "Select a number", Toast.LENGTH_SHORT).show();
                 } else {
-                    resChk(btn, Activated);
+                    resChk(btn, Activated, grp, pos);
 
                 }
             } else {
@@ -901,13 +972,1294 @@ public class Play extends AppCompatActivity {
         }
     }
 
-    private void resChk(Button i, int acti) {
+    private void resChk(Button btn, int active, int grpChk, int pos) {
+        if (grpChk == 1) {
+            if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active)))
+                    || (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active)))
+                    || (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+                if (pos == 1) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
 
-        i.setText(String.valueOf(acti));
-        i.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
 
 
-        result();
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 2) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 3) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 10) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 11) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 12) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 19) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 20) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 21) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 2) {
+            if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active)))
+                    || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active)))
+                    || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 4) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 5) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 6) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 13) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 14) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 15) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 22) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 23) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 24) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 3) {
+            if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    || (btn16.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active)))
+                    || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 7) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 8) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 9) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn1.getText().toString().equals(String.valueOf(active))) || (btn2.getText().toString().equals(String.valueOf(active))) || (btn3.getText().toString().equals(String.valueOf(active))) || (btn4.getText().toString().equals(String.valueOf(active))) || (btn5.getText().toString().equals(String.valueOf(active))) || (btn6.getText().toString().equals(String.valueOf(active))) || (btn7.getText().toString().equals(String.valueOf(active))) || (btn8.getText().toString().equals(String.valueOf(active))) || (btn9.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 16) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 17) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 18) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn10.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 25) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 26) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 27) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn19.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 4) {
+            if ((btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active)))
+                    || (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active)))
+                    || (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 28) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+
+
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 29) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 30) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 37) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 38) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 39) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 46) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 47) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 48) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 5) {
+            if ((btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active)))
+                    || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active)))
+                    || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 31) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 32) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 33) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 40) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 41) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 42) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 49) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 50) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 51) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 6) {
+            if ((btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    || (btn43.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+                if (pos == 34) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 35) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 36) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn28.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 43) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 44) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 45) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn37.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 52) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 53) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 54) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn46.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 7) {
+            if ((btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active)))
+                    || (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active)))
+                    || (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 55) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+
+
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 56) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 57) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 64) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 65) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 66) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 73) {
+                    if ((btn1.getText().toString().equals(String.valueOf(active))) || (btn10.getText().toString().equals(String.valueOf(active))) || (btn19.getText().toString().equals(String.valueOf(active))) || (btn28.getText().toString().equals(String.valueOf(active))) || (btn37.getText().toString().equals(String.valueOf(active))) || (btn46.getText().toString().equals(String.valueOf(active))) || (btn55.getText().toString().equals(String.valueOf(active))) || (btn64.getText().toString().equals(String.valueOf(active))) || (btn73.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 74) {
+                    if ((btn2.getText().toString().equals(String.valueOf(active))) || (btn11.getText().toString().equals(String.valueOf(active))) || (btn20.getText().toString().equals(String.valueOf(active))) || (btn29.getText().toString().equals(String.valueOf(active))) || (btn38.getText().toString().equals(String.valueOf(active))) || (btn47.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 75) {
+                    if ((btn3.getText().toString().equals(String.valueOf(active))) || (btn12.getText().toString().equals(String.valueOf(active))) || (btn21.getText().toString().equals(String.valueOf(active))) || (btn30.getText().toString().equals(String.valueOf(active))) || (btn39.getText().toString().equals(String.valueOf(active))) || (btn48.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 8) {
+            if ((btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active)))
+                    || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active)))
+                    || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 58) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 59) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 60) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 67) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 68) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 69) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 76) {
+                    if ((btn4.getText().toString().equals(String.valueOf(active))) || (btn13.getText().toString().equals(String.valueOf(active))) || (btn22.getText().toString().equals(String.valueOf(active))) || (btn31.getText().toString().equals(String.valueOf(active))) || (btn40.getText().toString().equals(String.valueOf(active))) || (btn49.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 77) {
+                    if ((btn5.getText().toString().equals(String.valueOf(active))) || (btn14.getText().toString().equals(String.valueOf(active))) || (btn23.getText().toString().equals(String.valueOf(active))) || (btn32.getText().toString().equals(String.valueOf(active))) || (btn41.getText().toString().equals(String.valueOf(active))) || (btn50.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 78) {
+                    if ((btn6.getText().toString().equals(String.valueOf(active))) || (btn15.getText().toString().equals(String.valueOf(active))) || (btn24.getText().toString().equals(String.valueOf(active))) || (btn33.getText().toString().equals(String.valueOf(active))) || (btn42.getText().toString().equals(String.valueOf(active))) || (btn51.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        } else if (grpChk == 9) {
+            if ((btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))) {
+                blinkOne(btn);
+            } else {
+
+                if (pos == 61) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 62) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 63) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn55.getText().toString().equals(String.valueOf(active))) || (btn56.getText().toString().equals(String.valueOf(active))) || (btn57.getText().toString().equals(String.valueOf(active))) || (btn58.getText().toString().equals(String.valueOf(active))) || (btn59.getText().toString().equals(String.valueOf(active))) || (btn60.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 70) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 71) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 72) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn64.getText().toString().equals(String.valueOf(active))) || (btn65.getText().toString().equals(String.valueOf(active))) || (btn66.getText().toString().equals(String.valueOf(active))) || (btn67.getText().toString().equals(String.valueOf(active))) || (btn68.getText().toString().equals(String.valueOf(active))) || (btn69.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active)))
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 79) {
+                    if ((btn7.getText().toString().equals(String.valueOf(active))) || (btn16.getText().toString().equals(String.valueOf(active))) || (btn25.getText().toString().equals(String.valueOf(active))) || (btn34.getText().toString().equals(String.valueOf(active))) || (btn43.getText().toString().equals(String.valueOf(active))) || (btn52.getText().toString().equals(String.valueOf(active))) || (btn61.getText().toString().equals(String.valueOf(active))) || (btn70.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 80) {
+                    if ((btn8.getText().toString().equals(String.valueOf(active))) || (btn17.getText().toString().equals(String.valueOf(active))) || (btn26.getText().toString().equals(String.valueOf(active))) || (btn35.getText().toString().equals(String.valueOf(active))) || (btn44.getText().toString().equals(String.valueOf(active))) || (btn53.getText().toString().equals(String.valueOf(active))) || (btn62.getText().toString().equals(String.valueOf(active))) || (btn71.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+                if (pos == 81) {
+                    if ((btn9.getText().toString().equals(String.valueOf(active))) || (btn18.getText().toString().equals(String.valueOf(active))) || (btn27.getText().toString().equals(String.valueOf(active))) || (btn36.getText().toString().equals(String.valueOf(active))) || (btn45.getText().toString().equals(String.valueOf(active))) || (btn54.getText().toString().equals(String.valueOf(active))) || (btn63.getText().toString().equals(String.valueOf(active))) || (btn72.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active))) ||
+                            (btn73.getText().toString().equals(String.valueOf(active))) || (btn74.getText().toString().equals(String.valueOf(active))) || (btn75.getText().toString().equals(String.valueOf(active))) || (btn76.getText().toString().equals(String.valueOf(active))) || (btn77.getText().toString().equals(String.valueOf(active))) || (btn78.getText().toString().equals(String.valueOf(active))) || (btn79.getText().toString().equals(String.valueOf(active))) || (btn80.getText().toString().equals(String.valueOf(active))) || (btn81.getText().toString().equals(String.valueOf(active)))
+
+                    ) {
+                        blinkOne(btn);
+                    } else {
+                        btn.setText(String.valueOf(active));
+                        btn.setTag(String.valueOf(active));
+                        btn.setTextColor(getResources().getColor(R.color.black));
+
+                        btn.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+                    }
+                }
+
+                result();
+            }
+        }
+
+
+    }
+
+    private void blinkOne(Button btna) {
+        btna.setBackgroundColor(getResources().getColor(R.color.red));
+        Thread one = new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            btna.setBackgroundColor(getResources().getColor(R.color.trans));
+                            // Stuff that updates the UI
+                        }
+                    });
+                } catch (InterruptedException ex) {
+                    //do stuff
+                }
+            }
+        };
+        one.start();
+
+        lifeCount--;
+        if (lifeCount==0){
+
+            life1.setVisibility(View.INVISIBLE);
+            Thread life = new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(500);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                life1.setVisibility(View.VISIBLE);
+                                // Stuff that updates the UI
+                            }
+                        });
+                        Thread.sleep(500);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                life1.setVisibility(View.INVISIBLE);
+                                // Stuff that updates the UI
+                            }
+                        });
+                    } catch (InterruptedException ex) {
+                        //do stuff
+                    }
+                }
+            };
+            life.start();
+            new MaterialAlertDialogBuilder(Play.this)
+                    .setTitle("Game Over ")
+                    .setMessage("You Ran Out Of Lives ")
+                    .setPositiveButton("Watch Ads", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                           lifeCount=3;
+                            life1.setVisibility(View.VISIBLE);
+                            life2.setVisibility(View.VISIBLE);
+                            life3.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .setNegativeButton("Restart", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                            int lvl = sh.getInt("lvl", 1);
+                            getdata(String.valueOf(lvl));
+                        }
+                    })
+                    .show();
+        }else  if (lifeCount==2){
+            life3.setVisibility(View.INVISIBLE);
+            Thread life = new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(500);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                life3.setVisibility(View.VISIBLE);
+                                // Stuff that updates the UI
+                            }
+                        });
+                        Thread.sleep(500);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                life3.setVisibility(View.INVISIBLE);
+                                // Stuff that updates the UI
+                            }
+                        });
+                    } catch (InterruptedException ex) {
+                        //do stuff
+                    }
+                }
+            };
+            life.start();
+           // life3.setVisibility(View.INVISIBLE);
+        }
+        else  if (lifeCount==1){
+          //  life2.setBackgroundResource(R.drawable.border);
+
+            life2.setVisibility(View.INVISIBLE);
+            Thread life = new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(500);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                life2.setVisibility(View.VISIBLE);
+                                // Stuff that updates the UI
+                            }
+                        });
+                        Thread.sleep(500);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                life2.setVisibility(View.INVISIBLE);
+                                // Stuff that updates the UI
+                            }
+                        });
+                    } catch (InterruptedException ex) {
+                        //do stuff
+                    }
+                }
+            };
+            life.start();
+
+        }
     }
 
     private void blinkChk(int i) {
@@ -3196,7 +4548,27 @@ public class Play extends AppCompatActivity {
     }
 
     private void result() {
-        if (false) {
+        if ((!btn1.getText().toString().equals(" ")) && (!btn2.getText().toString().equals(" ")) && (!btn3.getText().toString().equals(" ")) && (!btn4.getText().toString().equals(" "))
+                && (!btn5.getText().toString().equals(" ")) && (!btn6.getText().toString().equals(" ")) && (!btn7.getText().toString().equals(" ")) && (!btn8.getText().toString().equals(" "))
+                && (!btn9.getText().toString().equals(" ")) && (!btn10.getText().toString().equals(" ")) && (!btn11.getText().toString().equals(" ")) && (!btn12.getText().toString().equals(" "))
+                && (!btn13.getText().toString().equals(" ")) && (!btn14.getText().toString().equals(" ")) && (!btn15.getText().toString().equals(" ")) && (!btn16.getText().toString().equals(" "))
+                && (!btn17.getText().toString().equals(" ")) && (!btn18.getText().toString().equals(" ")) && (!btn19.getText().toString().equals(" ")) && (!btn20.getText().toString().equals(" "))
+                && (!btn21.getText().toString().equals(" ")) && (!btn22.getText().toString().equals(" ")) && (!btn23.getText().toString().equals(" ")) && (!btn24.getText().toString().equals(" "))
+                && (!btn25.getText().toString().equals(" ")) && (!btn26.getText().toString().equals(" ")) && (!btn27.getText().toString().equals(" ")) && (!btn28.getText().toString().equals(" "))
+                && (!btn29.getText().toString().equals(" ")) && (!btn30.getText().toString().equals(" ")) && (!btn31.getText().toString().equals(" ")) && (!btn32.getText().toString().equals(" "))
+                && (!btn33.getText().toString().equals(" ")) && (!btn34.getText().toString().equals(" ")) && (!btn35.getText().toString().equals(" ")) && (!btn36.getText().toString().equals(" "))
+                && (!btn37.getText().toString().equals(" ")) && (!btn38.getText().toString().equals(" ")) && (!btn39.getText().toString().equals(" ")) && (!btn40.getText().toString().equals(" "))
+                && (!btn41.getText().toString().equals(" ")) && (!btn42.getText().toString().equals(" ")) && (!btn43.getText().toString().equals(" ")) && (!btn44.getText().toString().equals(" "))
+                && (!btn45.getText().toString().equals(" ")) && (!btn46.getText().toString().equals(" ")) && (!btn47.getText().toString().equals(" ")) && (!btn48.getText().toString().equals(" "))
+                && (!btn49.getText().toString().equals(" ")) && (!btn50.getText().toString().equals(" ")) && (!btn51.getText().toString().equals(" ")) && (!btn52.getText().toString().equals(" "))
+                && (!btn53.getText().toString().equals(" ")) && (!btn54.getText().toString().equals(" ")) && (!btn55.getText().toString().equals(" ")) && (!btn56.getText().toString().equals(" "))
+                && (!btn57.getText().toString().equals(" ")) && (!btn58.getText().toString().equals(" ")) && (!btn59.getText().toString().equals(" ")) && (!btn60.getText().toString().equals(" "))
+                && (!btn61.getText().toString().equals(" ")) && (!btn62.getText().toString().equals(" ")) && (!btn63.getText().toString().equals(" ")) && (!btn64.getText().toString().equals(" "))
+                && (!btn65.getText().toString().equals(" ")) && (!btn66.getText().toString().equals(" ")) && (!btn67.getText().toString().equals(" ")) && (!btn68.getText().toString().equals(" "))
+                && (!btn69.getText().toString().equals(" ")) && (!btn70.getText().toString().equals(" ")) && (!btn71.getText().toString().equals(" ")) && (!btn72.getText().toString().equals(" "))
+                && (!btn73.getText().toString().equals(" ")) && (!btn74.getText().toString().equals(" ")) && (!btn75.getText().toString().equals(" ")) && (!btn76.getText().toString().equals(" "))
+                && (!btn77.getText().toString().equals(" ")) && (!btn78.getText().toString().equals(" ")) && (!btn79.getText().toString().equals(" ")) && (!btn80.getText().toString().equals(" "))
+                && (!btn81.getText().toString().equals(" "))) {
             SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
             int lvl = sh.getInt("lvl", 1);
 
@@ -3204,17 +4576,168 @@ public class Play extends AppCompatActivity {
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
             myEdit.putInt("lvl", lvl + 1);
             myEdit.commit();
-
-            Intent intent = new Intent(getApplicationContext(), Play.class);
-            startActivity(intent);
-            finish();
-        } else {
+            new MaterialAlertDialogBuilder(Play.this)
+                    .setTitle("You Won")
+                    .setMessage("congratulations you cleared the lvl")
+                    .setPositiveButton("Next Lvl", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            getdata(String.valueOf(lvl + 1));
+                        }
+                    })
+                    .setNegativeButton("Home", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .show();
 
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private void getdata(String level) {
+        ProgressDialog dialog = ProgressDialog.show(Play.this, "",
+                "Loading. Please wait...", true);
+        databaseReference.child("Level").child(level).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                    Toast.makeText(Play.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_LONG).show();
+
+
+                } else {
+                    // Toast.makeText(Play.this, String.valueOf(task.getResult().getValue()), Toast.LENGTH_LONG).show();
+                    if (task.getResult().getValue() == null) {
+
+                        Toast.makeText(Play.this, "Finish", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    } else {
+
+// My top posts by number of stars
+                        databaseReference.child("Level").child(level).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                int j = 0;
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    // TODO: handle the post
+                                    num[j] = String.valueOf(postSnapshot.getValue());
+                                    j++;
+
+                                }
+                                dialog.dismiss();
+                                Intent intent = new Intent(getApplicationContext(), Play.class);
+                                intent.putExtra("Data", num);
+                                intent.putExtra("lvl", level);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Getting Post failed, log a message
+                                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                                // ...
+                            }
+                        });
+                    }
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                }
+            }
+        });
+
+
+    }
+
     private void setData() {
         num = (String[]) getIntent().getSerializableExtra("Data");
+        btn1.setTag(" ");
+        btn2.setTag(" ");
+        btn3.setTag(" ");
+        btn4.setTag(" ");
+        btn5.setTag(" ");
+        btn6.setTag(" ");
+        btn7.setTag(" ");
+        btn8.setTag(" ");
+        btn9.setTag(" ");
+        btn10.setTag(" ");
+        btn11.setTag(" ");
+        btn12.setTag(" ");
+        btn13.setTag(" ");
+        btn14.setTag(" ");
+        btn15.setTag(" ");
+        btn16.setTag(" ");
+        btn17.setTag(" ");
+        btn18.setTag(" ");
+        btn19.setTag(" ");
+        btn20.setTag(" ");
+        btn21.setTag(" ");
+        btn22.setTag(" ");
+        btn23.setTag(" ");
+        btn24.setTag(" ");
+        btn25.setTag(" ");
+        btn26.setTag(" ");
+        btn27.setTag(" ");
+        btn28.setTag(" ");
+        btn29.setTag(" ");
+        btn30.setTag(" ");
+        btn31.setTag(" ");
+        btn32.setTag(" ");
+        btn33.setTag(" ");
+        btn34.setTag(" ");
+        btn35.setTag(" ");
+        btn36.setTag(" ");
+        btn37.setTag(" ");
+        btn38.setTag(" ");
+        btn39.setTag(" ");
+        btn40.setTag(" ");
+        btn41.setTag(" ");
+        btn42.setTag(" ");
+        btn43.setTag(" ");
+        btn44.setTag(" ");
+        btn45.setTag(" ");
+        btn46.setTag(" ");
+        btn47.setTag(" ");
+        btn48.setTag(" ");
+        btn49.setTag(" ");
+        btn50.setTag(" ");
+        btn51.setTag(" ");
+        btn52.setTag(" ");
+        btn53.setTag(" ");
+        btn54.setTag(" ");
+        btn55.setTag(" ");
+        btn56.setTag(" ");
+        btn57.setTag(" ");
+        btn58.setTag(" ");
+        btn59.setTag(" ");
+        btn60.setTag(" ");
+        btn61.setTag(" ");
+        btn62.setTag(" ");
+        btn63.setTag(" ");
+        btn64.setTag(" ");
+        btn65.setTag(" ");
+        btn66.setTag(" ");
+        btn67.setTag(" ");
+        btn68.setTag(" ");
+        btn69.setTag(" ");
+        btn70.setTag(" ");
+        btn71.setTag(" ");
+        btn72.setTag(" ");
+        btn73.setTag(" ");
+        btn74.setTag(" ");
+        btn75.setTag(" ");
+        btn76.setTag(" ");
+        btn77.setTag(" ");
+        btn78.setTag(" ");
+        btn79.setTag(" ");
+        btn80.setTag(" ");
+        btn81.setTag(" ");
+
         btn1.setText(num[0]);
         btn2.setText(num[1]);
         btn3.setText(num[2]);
@@ -3303,9 +4826,16 @@ public class Play extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Data");
         Activated = 0;
+        remove = false;
+        lifeCount=3;
         CurLvL = findViewById(R.id.CurLvL);
         String lvl = getIntent().getStringExtra("lvl");
         CurLvL.setText("Level-" + lvl);
+
+        life1=findViewById(R.id.life1);
+        life2=findViewById(R.id.life2);
+        life3=findViewById(R.id.life3);
+        erase = findViewById(R.id.erase);
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
         btn3 = findViewById(R.id.button3);
@@ -3387,6 +4917,7 @@ public class Play extends AppCompatActivity {
         btn79 = findViewById(R.id.button79);
         btn80 = findViewById(R.id.button80);
         btn81 = findViewById(R.id.button81);
+        btnA = new Button[]{btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20, btn21, btn22, btn23, btn24, btn25, btn26, btn27, btn28, btn29, btn30, btn31, btn32, btn33, btn34, btn35, btn36, btn37, btn38, btn39, btn40, btn41, btn42, btn43, btn44, btn45, btn46, btn47, btn48, btn49, btn50, btn51, btn52, btn53, btn54, btn55, btn56, btn57, btn58, btn59, btn60, btn61, btn62, btn63, btn64, btn65, btn66, btn67, btn68, btn69, btn70, btn71, btn72, btn73, btn74, btn75, btn76, btn77, btn78, btn79, btn80, btn81};
 
         press1 = findViewById(R.id.press1);
         press2 = findViewById(R.id.press2);
@@ -3407,6 +4938,7 @@ public class Play extends AppCompatActivity {
         press7.setTag(" ");
         press8.setTag(" ");
         press9.setTag(" ");
+
 
     }
 

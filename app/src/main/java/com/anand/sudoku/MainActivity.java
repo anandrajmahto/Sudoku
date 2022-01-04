@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,13 +28,12 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth.AuthStateListener mAuthListener;
-    Button login,Play,Upload;
-    private FirebaseAuth mAuth;
+    Button login, Play, Upload;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     String[] num = new String[90];
     ProgressDialog dialog;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +43,34 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("Data");
 
         mAuth = FirebaseAuth.getInstance();
+
         login = findViewById(R.id.login);
         Play = findViewById(R.id.Play);
         Upload = findViewById(R.id.Upload);
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         String lvl = String.valueOf(sh.getInt("lvl", 1));
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-        Play.setText("Play Lvl-"+lvl);
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, "Log-in failed ", Toast.LENGTH_SHORT).show();
+                            login.setVisibility(View.VISIBLE);
+                        } else {
+                            // start an acitivty here
+
+                            Toast.makeText(MainActivity.this, "Log-in", Toast.LENGTH_SHORT).show();
+                            login.setVisibility(View.INVISIBLE);
+                        }
+
+                    }
+                });
+        Play.setText("Play Lvl-" + lvl);
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Upload.class);
+                Intent intent = new Intent(getApplicationContext(), Upload.class);
                 startActivity(intent);
 
             }
@@ -89,31 +104,13 @@ public class MainActivity extends AppCompatActivity {
                                     // start an acitivty here
 
                                     Toast.makeText(MainActivity.this, "Log-in", Toast.LENGTH_SHORT).show();
+                                    login.setVisibility(View.INVISIBLE);
                                 }
 
                             }
                         });
             }
         });
-// active listen to user logged in or not.
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Toast.makeText(MainActivity.this, "Logged-in ", Toast.LENGTH_SHORT).show();
-                    login.setVisibility(View.INVISIBLE);
-                    Log.d("TAG", "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Toast.makeText(MainActivity.this, " Not Logged-in", Toast.LENGTH_SHORT).show();
-
-
-                    // User is signed out
-                    Log.d("TAG", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
 
     }
 
@@ -132,55 +129,43 @@ public class MainActivity extends AppCompatActivity {
                     if (task.getResult().getValue() == null) {
 
                         Toast.makeText(MainActivity.this, "Finish", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }else{
 
+// My top posts by number of stars
+                        databaseReference.child("Level").child(level).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                int j = 0;
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    // TODO: handle the post
+                                    num[j] = String.valueOf(postSnapshot.getValue());
+                                    j++;
+
+                                }
+                                dialog.dismiss();
+                                Intent intent = new Intent(getApplicationContext(), Play.class);
+                                intent.putExtra("Data", num);
+                                intent.putExtra("lvl", level);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Getting Post failed, log a message
+                                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                                // ...
+                            }
+                        });
                     }
+
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
             }
         });
 
 
-// My top posts by number of stars
-        databaseReference.child("Level").child(level).addListenerForSingleValueEvent(new  ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                int j = 0;
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    // TODO: handle the post
-                    num[j] = String.valueOf(postSnapshot.getValue());
-                    j++;
-
-                }
-                dialog.dismiss();
-                Intent intent=new Intent(getApplicationContext(),Play.class);
-                intent.putExtra("Data",num);
-                intent.putExtra("lvl",level);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-
-    }
-    // Add Auth state listener in onStart method.
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    // stop listener in onStop
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 }
